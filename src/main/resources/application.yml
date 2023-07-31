@@ -1,0 +1,5 @@
+# external server with fake graphql data
+# see https://graphqlzero.almansi.me
+graphql:
+  client:
+    url: https://graphqlzero.almansi.me/api

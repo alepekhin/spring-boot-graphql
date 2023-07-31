@@ -1,0 +1,9 @@
+
+query GetUserFromClient ($id: ID!) {
+    user (id: $id) {
+        id
+        name
+        username
+        email
+    }
+}
