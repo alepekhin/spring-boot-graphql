@@ -26,3 +26,7 @@ java -jar build/libs/demo-0.0.1-SNAPSHOT.jar
 
 After running the application Postman can be used for testing API.
 In the latest version it has nice integration with GraphQL and schema.
+API URL is
+```
+http://localhost:8080/graphql
+```
