@@ -3,3 +3,23 @@
 graphql:
   client:
     url: https://graphqlzero.almansi.me/api
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - info
+          - health
+          - prometheus
+          - metrics
+
+logging:
+  file:
+    name: demo.log
+    max-history: 2 # days history
+  level:
+    root: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd'T'HH:mm:ss.SSXXX} [%p] %msg%n"
+    file:    "%d{yyyy-MM-dd'T'HH:mm:ss.SSXXX} [%p] %msg%n"
