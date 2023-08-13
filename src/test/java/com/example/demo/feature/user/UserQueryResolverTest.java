@@ -5,9 +5,10 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.graphql.test.tester.GraphQlTester;
+import org.springframework.graphql.test.tester.HttpGraphQlTester;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author Alex
@@ -20,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class UserQueryResolverTest {
 
     @Autowired
-    GraphQlTester tester;
+    HttpGraphQlTester tester;
 
     @Test
     public void queryUser() {
@@ -36,7 +37,9 @@ public class UserQueryResolverTest {
     
                     """;
 
-        User result =tester.document(document)
+        var tester1 = tester.mutate().header("x-api-key","xxx").build();
+
+        User result =tester1.document(document)
                 .execute()
                 .path("user")
                 .entity(User.class)
@@ -46,7 +49,7 @@ public class UserQueryResolverTest {
     }
 
     @Test
-    public void queryUser_negative() {
+    public void queryUser_negative_no_api_key() {
         String document = """
                     query {
                     user(id: "aa") {
@@ -58,16 +61,38 @@ public class UserQueryResolverTest {
                     }
     
                     """;
-        Throwable thrown;
-        thrown = Assertions.assertThrows(Throwable.class, () -> {
+        Throwable thrown = Assertions.assertThrows(Throwable.class, () -> {
             User result =tester.document(document)
                     .execute()
                     .path("user")
                     .entity(User.class)
                     .get();
         }, "Exception was expected");
+        assertTrue(thrown.getMessage().contains("500"));
+    }
 
-        Assertions.assertTrue(thrown.getMessage().contains("rejected value [aa]"));
+    @Test
+    public void queryUser_negative_invalid_id() {
+        String document = """
+                    query {
+                    user(id: "aa") {
+                                    id
+                                    name
+                                    username
+                                    email
+                                    }
+                    }
+    
+                    """;
+        var tester1 = tester.mutate().header("x-api-key","xxx").build();
+        Throwable thrown = Assertions.assertThrows(Throwable.class, () -> {
+            User result =tester1.document(document)
+                    .execute()
+                    .path("user")
+                    .entity(User.class)
+                    .get();
+        }, "Exception was expected");
+        assertTrue(thrown.getMessage().contains("aa"));
     }
 
 }
