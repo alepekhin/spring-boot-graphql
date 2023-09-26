@@ -5,6 +5,7 @@ import com.example.demo.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -20,10 +21,24 @@ public class UserService {
     final GraphqlClient client;
 
     public User getUser(Integer id) throws ExecutionException, InterruptedException, TimeoutException {
-        return client.getClient().documentName("user_get")
+        return client.getClient()
+                .documentName("user_get")
                 .variable("id", id)
-                .retrieve("user").toEntity(User.class).toFuture().get(2, TimeUnit.SECONDS);
+                .retrieve("user")
+                .toEntity(User.class)
+                .toFuture()
+                .get(2, TimeUnit.SECONDS);
 
+    }
+
+    public List<User> getUsers() throws ExecutionException, InterruptedException, TimeoutException {
+        return client.getClient()
+                .documentName("user_list")
+                .retrieve("users")
+                .toEntity(UsersResponse.class)
+                .toFuture()
+                .get(5, TimeUnit.SECONDS)
+                .getData();
     }
 
 }

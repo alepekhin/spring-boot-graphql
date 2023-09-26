@@ -45,7 +45,6 @@ public class UserQueryResolverTest {
                 .entity(User.class)
                 .get();
         assertEquals(1, result.getId());
-        System.out.println(result);
     }
 
     @Test
@@ -95,4 +94,28 @@ public class UserQueryResolverTest {
         assertTrue(thrown.getMessage().contains("aa"));
     }
 
+    @Test
+    public void queryUsers() {
+        String document = """
+                    query Users {
+                        users {
+                            id
+                            name
+                            username
+                            email
+                        }
+                    }
+                """;
+
+        var tester1 = tester.mutate().header("x-api-key","xxx").build();
+
+        var result = tester1.document(document)
+                .execute()
+                .path("users")
+                .entityList(User.class)
+                .get();
+        assertTrue(result.size() > 0);
+    }
+
 }
+

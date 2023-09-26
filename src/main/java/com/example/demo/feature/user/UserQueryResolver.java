@@ -8,6 +8,7 @@ import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
 
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
@@ -26,6 +27,12 @@ public class UserQueryResolver {
     @Timed("get_user_time")
     public User user(@Argument Integer id) throws ExecutionException, InterruptedException, TimeoutException {
         return userService.getUser(id);
+    }
+
+    @QueryMapping
+    @Timed("get_user_list_time")
+    public List<User> users() throws ExecutionException, InterruptedException, TimeoutException {
+        return userService.getUsers();
     }
 
 }

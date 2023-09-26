@@ -1,8 +1,10 @@
 # spring-boot-graphql
 
-Demo usage GraphQL with Spring Boot.
-First we built GraphQL client and get data from GraphQL fake server.
+Demo usage GraphQL with Spring Boot and WebFlux.
+First we built GraphQL client and get data from GraphQL fake server,
+see https://graphqlzero.almansi.me/
 Then we pass the data through our GraphQL server.
+We retrieve a list of Users and one User by ID as an example.
 
 Project was built with Spring Boot initializer with minimum dependencies.
 
