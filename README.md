@@ -4,7 +4,8 @@ Demo usage GraphQL with Spring Boot and WebFlux.
 First we built GraphQL client and get data from GraphQL fake server,
 see https://graphqlzero.almansi.me/
 Then we pass the data through our GraphQL server.
-We retrieve a list of Users and one User by ID as an example.
+We retrieve a list of Users and one User by ID as an example
+with http client as well as with web socket client.
 
 Project was built with Spring Boot initializer with minimum dependencies.
 
@@ -28,9 +29,23 @@ java -jar build/libs/demo-0.0.1-SNAPSHOT.jar
 
 After running the application Postman can be used for testing API.
 In the latest version it has nice integration with GraphQL and schema.
-API URL is
+API URLs are
 ```
 http://localhost:8080/graphql
+ws://localhost:8080/ws
+```
+
+Another way is to use integration tests. That are tests with the name *IT.java.
+
+## How to run integration tests
+
+In the terminal window execute
+```
+gradle bootRun
+```
+In another terminal widow execute
+```
+gradle integrationTests
 ```
 
 ## Other project features

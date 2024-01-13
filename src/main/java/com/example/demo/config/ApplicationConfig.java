@@ -38,7 +38,7 @@ public class ApplicationConfig {
         Properties git = new Properties();
         git.load(resource.getInputStream());
         return args -> {
-            log.info("branch {}, commit {}, version {}", git.getProperty("git.branch"), git.getProperty("git.commit.id.abbrev"), git.getProperty("git.build.version"));
+            log.info("branch {}, commit {}", git.getProperty("git.branch"), git.getProperty("git.commit.id.abbrev"));
         };
     }
 

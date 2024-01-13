@@ -1,0 +1,8 @@
+subscription {
+    getUsers {
+        id
+        name
+        username
+        email
+    }
+}

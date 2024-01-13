@@ -9,3 +9,8 @@ type Query {
     users: [User]
     user(id: ID!): User
 }
+
+type Subscription {
+    getUsers: User
+    getUser(id: ID!): User
+}

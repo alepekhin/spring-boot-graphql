@@ -13,18 +13,15 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Component
 public class GraphqlClient {
 
-    @Value("${graphql.client.url}")
-    String url;
-
     HttpGraphQlClient client;
 
     @PostConstruct
     void init() {
-        client = HttpGraphQlClient.builder(WebClient.create(url)).build();
+        client = HttpGraphQlClient.builder(WebClient.create()).build();
     }
 
-    public HttpGraphQlClient getClient() {
-        return client;
+    public HttpGraphQlClient getClient(String url) {
+        return client.mutate().url(url).build();
     }
 
 }

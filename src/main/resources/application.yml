@@ -4,6 +4,11 @@ graphql:
   client:
     url: https://graphqlzero.almansi.me/api
 
+spring:
+  graphql:
+    websocket:
+      path: /ws
+
 management:
   endpoints:
     web:

@@ -38,9 +38,25 @@ dependencies {
 
 }
 
+tasks.named('test') {
+	useJUnitPlatform {
+		filter {
+			includeTestsMatching "*Test"
+		}
+	}
+}
+
 test {
 	useJUnitPlatform()
 	finalizedBy jacocoTestReport
+}
+
+def integrationTests = tasks.register("integrationTests", Test) {
+	useJUnitPlatform {
+		filter {
+			includeTestsMatching '*IT'
+		}
+	}
 }
 
 jacocoTestReport {
