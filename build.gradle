@@ -66,3 +66,13 @@ jacocoTestReport {
 jacoco {
 	toolVersion = "0.8.7"
 }
+
+javadoc {
+	options.memberLevel = JavadocMemberLevel.PUBLIC
+	doLast{
+		copy {
+			from 'build/docs/javadoc'
+			into 'public/javadoc'
+		}
+	}
+}
