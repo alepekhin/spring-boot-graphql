@@ -1,6 +1,6 @@
 package com.example.demo.feature.user;
 
-import com.example.demo.common.GraphqlClient;
+import com.example.demo.common.HttpClientBase;
 import com.example.demo.model.User;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,7 +28,7 @@ public class UserRepository {
 
     @PostConstruct
     void init() {
-        repositoryClient = GraphqlClient.INSTANCE.getHttpClient(url);
+        repositoryClient = HttpClientBase.INSTANCE.getHttpClient(url);
     }
 
     public User getOneUser(Integer id) throws ExecutionException, InterruptedException, TimeoutException {

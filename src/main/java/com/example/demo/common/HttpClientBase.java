@@ -7,12 +7,12 @@ import org.springframework.web.reactive.function.client.WebClient;
  * @author Alex
  * @since 31.07.2023
  */
-public class GraphqlClient {
+public class HttpClientBase {
 
-    public static GraphqlClient INSTANCE = new GraphqlClient();
+    public static HttpClientBase INSTANCE = new HttpClientBase();
     HttpGraphQlClient client;
 
-    private GraphqlClient() {
+    private HttpClientBase() {
         client = HttpGraphQlClient.builder(WebClient.create()).build();
     }
 
