@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 // Warning: This is integration test
 
 @SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class UserQueryResolverTest {
+public class UserControllerTest {
 
     @Autowired
     HttpGraphQlTester tester;

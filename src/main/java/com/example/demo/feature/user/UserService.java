@@ -14,6 +14,10 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 /**
+ * Методы получения данных -
+ * два для Http Graphql client
+ * и два для Web socket Graphql client
+ * 
  * @author Alex
  * @since 31.07.2023
  */
@@ -21,52 +25,23 @@ import java.util.concurrent.TimeoutException;
 @RequiredArgsConstructor
 public class UserService {
 
-    @Value("${graphql.client.url}")
-    String url;
-
-    final GraphqlClient client;
+    final UserRepository userRepository;
 
     public User user(Integer id) throws ExecutionException, InterruptedException, TimeoutException {
-        return client.getClient(url)
-                .documentName("user_get")
-                .variable("id", id)
-                .retrieve("user")
-                .toEntity(User.class)
-                .toFuture()
-                .get(2, TimeUnit.SECONDS);
-
-    }
-
-    public Mono<User> getUser(Integer id) throws ExecutionException, InterruptedException, TimeoutException {
-        return Mono.just(client.getClient(url)
-                .documentName("user_get")
-                .variable("id", id)
-                .retrieve("user")
-                .toEntity(User.class)
-                .toFuture()
-                .get(2, TimeUnit.SECONDS));
-
+        return userRepository.getOneUser(id);
     }
 
     public List<User> users() throws ExecutionException, InterruptedException, TimeoutException {
-        return client.getClient(url)
-                .documentName("user_list")
-                .retrieve("users")
-                .toEntity(UsersResponse.class)
-                .toFuture()
-                .get(5, TimeUnit.SECONDS)
-                .getData();
+        return userRepository.getAllUsers();
+    }
+
+    public Mono<User> getUser(Integer id) throws ExecutionException, InterruptedException, TimeoutException {
+        return Mono.just(userRepository.getOneUser(id));
+
     }
 
     public Flux<User> getUsers() throws ExecutionException, InterruptedException, TimeoutException {
-        var users = client.getClient(url)
-                .documentName("user_list")
-                .retrieve("users")
-                .toEntity(UsersResponse.class)
-                .toFuture()
-                .get(5, TimeUnit.SECONDS)
-                .getData();
-        return Flux.fromIterable(users);
+        return Flux.fromIterable(userRepository.getAllUsers());
     }
 
 }

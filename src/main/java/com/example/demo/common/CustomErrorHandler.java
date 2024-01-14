@@ -16,10 +16,18 @@ public class CustomErrorHandler extends DataFetcherExceptionResolverAdapter {
     @Override
     protected GraphQLError resolveToSingleError(Throwable ex, DataFetchingEnvironment env) {
         return GraphqlErrorBuilder.newError()
-                .message(ex.getMessage())
+                .message(getLastCause(ex).getMessage())
                 .path(env.getExecutionStepInfo().getPath())
                 .location(env.getField().getSourceLocation())
                 .build();
+    }
+
+    public static Throwable getLastCause(Throwable e) {
+        if (e.getCause() == null) {
+            return e;
+        } else {
+            return getLastCause(e.getCause());
+        }
     }
 
 }

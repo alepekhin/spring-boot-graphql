@@ -11,7 +11,7 @@ import reactor.core.publisher.Mono;
  * @since 13.08.2023
  */
 @Component
-public class RequestErrorInterceptor implements WebGraphQlInterceptor {
+public class RequestInterceptor implements WebGraphQlInterceptor {
 
     @Override
     public Mono<WebGraphQlResponse> intercept(WebGraphQlRequest request, Chain chain) {

@@ -16,6 +16,7 @@ public abstract class ITBase {
     String serviceHost = "localhost:8080";
     protected static WebSocketGraphQlClient wsClient;
     protected static HttpGraphQlClient httpClient;
+    protected static WebClient metricsClient;
 
     public ITBase() {
         if (httpClient == null) {
@@ -27,6 +28,7 @@ public abstract class ITBase {
                     .builder("ws://" + serviceHost + "/ws", new ReactorNettyWebSocketClient())
                     .header("x-api-key", "xxx")
                     .build();
+            metricsClient = WebClient.create("http://" + serviceHost +"/actuator/prometheus");
         }
     }
 
