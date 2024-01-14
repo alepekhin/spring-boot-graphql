@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.graphql.client.HttpGraphQlClient;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -41,13 +42,13 @@ public class UserRepository {
     }
 
     public List<User> getAllUsers() throws ExecutionException, InterruptedException, TimeoutException {
-        return repositoryClient
+        return Arrays.stream(repositoryClient
                 .documentName("user_list")
-                .retrieve("users")
-                .toEntity(UsersResponse.class)
+                .retrieve("users.data")
+                .toEntity(User[].class)
                 .toFuture()
-                .get(5, TimeUnit.SECONDS)
-                .getData();
+                .get(5, TimeUnit.SECONDS))
+                .toList();
     }
 
 }
