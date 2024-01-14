@@ -26,7 +26,7 @@ public class ApplicationConfig {
     /**
      * TimedAspect создает метрику для оценки времени выполнения
      * метода с аннотацией @Timed(имя метрики)
-     * Значение метрики доступно по адресу /actuator/metrics/имя метрики
+     * Значение метрики доступно по адресу /actuator/prometheus
      */
     @Bean
     public TimedAspect timedAspect(MeterRegistry registry) {
