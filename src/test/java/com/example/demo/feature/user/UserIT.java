@@ -86,6 +86,7 @@ public class UserIT extends ITBase {
                         .retrieveSubscription("getUser")
                         .toEntity(User.class)
                         .onErrorContinue((e, o) -> System.out.println(e.getMessage())))
+                .expectSubscription()
                 .expectNext(expected)
                 .verifyComplete();
     }
@@ -117,6 +118,7 @@ public class UserIT extends ITBase {
                         .documentName("get_all_users_ws")
                         .retrieveSubscription("getUsers")
                         .toEntity(User.class))
+                .expectSubscription()
                 .expectNextCount(9)
                 .expectNext(expected)
                 .verifyComplete();
