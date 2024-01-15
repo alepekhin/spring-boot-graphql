@@ -11,10 +11,10 @@ Project was built with Spring Boot initializer with minimum dependencies.
 
 ## How to build locally
 
-Java 17 is required.
+Java 17 and gradle 8 are required and should be installed in OS
 
 ```
-./gradlew clean build
+gradle clean build
 ```
 
 Test result and coverage can be found at `build/reports`
