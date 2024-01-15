@@ -1,10 +1,8 @@
 package com.example.demo.feature.user;
 
-import com.example.demo.common.HttpClientBase;
+import com.example.demo.common.ClientFactory;
 import com.example.demo.model.User;
-import jakarta.annotation.PostConstruct;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.graphql.client.HttpGraphQlClient;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
@@ -19,20 +17,13 @@ import java.util.concurrent.TimeoutException;
  * @since 14.01.2024
  */
 @Component
+@RequiredArgsConstructor
 public class UserRepository {
 
-    @Value("${repository_url}")
-    String url;
-
-    HttpGraphQlClient repositoryClient;
-
-    @PostConstruct
-    void init() {
-        repositoryClient = HttpClientBase.INSTANCE.getHttpClient(url);
-    }
+    final ClientFactory clientFactory;
 
     public User getOneUser(Integer id) throws ExecutionException, InterruptedException, TimeoutException {
-        return repositoryClient
+        return clientFactory.getRepositoryClient()
                 .documentName("user_get") // abbreviation of graphql-documents/user_get.graphql
                 .variable("id", id)
                 .retrieve("user")
@@ -42,7 +33,7 @@ public class UserRepository {
     }
 
     public List<User> getAllUsers() throws ExecutionException, InterruptedException, TimeoutException {
-        return Arrays.stream(repositoryClient
+        return Arrays.stream(clientFactory.getRepositoryClient()
                 .documentName("user_list")
                 .retrieve("users.data")
                 .toEntity(User[].class)
