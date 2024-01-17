@@ -1,7 +1,5 @@
 package com.example.demo.config;
 
-import io.micrometer.core.aop.TimedAspect;
-import io.micrometer.core.instrument.MeterRegistry;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationRunner;
@@ -23,16 +21,6 @@ public class ApplicationConfig {
     @Value("classpath:/git.properties")
     Resource resource;
 
-    /**
-     * TimedAspect создает метрику для оценки времени выполнения
-     * метода с аннотацией @Timed(имя метрики)
-     * Значение метрики доступно по адресу /actuator/prometheus
-     */
-    @Bean
-    public TimedAspect timedAspect(MeterRegistry registry) {
-        return new TimedAspect(registry);
-    }
-
     @Bean
     public ApplicationRunner applicationRunner() throws IOException {
         Properties git = new Properties();
@@ -41,9 +29,5 @@ public class ApplicationConfig {
             log.info("branch {}, commit {}", git.getProperty("git.branch"), git.getProperty("git.commit.id.abbrev"));
         };
     }
-
-    /**
-     * TODO: Validate connection just after application start
-     */
 
 }

@@ -71,21 +71,12 @@ Show current request execution time
 http://localhost:8080/actuator/metrics/get_user_time
 {"name":"get_user_time","baseUnit":"seconds","measurements":[{"statistic":"COUNT","value":1.0},{"statistic":"TOTAL_TIME","value":1.262898466},{"statistic":"MAX","value":0.0}],"availableTags":[{"tag":"exception","values":["none"]},{"tag":"method","values":["user"]},{"tag":"class","values":["com.example.demo.feature.user.UserController"]}]}
 ```
+
+Метрики GraphQL появятся после выполнения каких либо запросов
+
 ### Get prometheus metrics
 ```
 http://localhost:8080/actuator/prometheus
-incuding current request execution time
-# HELP get_user_time_seconds_max  
-# TYPE get_user_time_seconds_max gauge
-get_user_time_seconds_max{class="com.example.demo.feature.user.UserController",exception="none",method="user",} 0.0
-# HELP get_user_time_seconds  
-# TYPE get_user_time_seconds summary
-get_user_time_seconds_count{class="com.example.demo.feature.user.UserController",exception="none",method="user",} 1.0
-get_user_time_seconds_sum{class="com.example.demo.feature.user.UserController",exception="none",method="user",} 1.262898466
-```
-### Write logs compatible with Kibana
-```
-"%d{yyyy-MM-dd'T'HH:mm:ss.SSXXX} [%p] %msg%n"
 ```
 
 

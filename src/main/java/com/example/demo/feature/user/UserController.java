@@ -1,8 +1,6 @@
 package com.example.demo.feature.user;
 
-import com.example.demo.feature.MetricNames;
 import com.example.demo.model.User;
-import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
@@ -29,25 +27,21 @@ public class UserController {
     final UserService userService;
 
     @QueryMapping
-    @Timed(MetricNames.ONE_USER_HTTP)
     public User user(@Argument Integer id) throws ExecutionException, InterruptedException, TimeoutException {
         return userService.user(id);
     }
 
     @QueryMapping
-    @Timed(MetricNames.ALL_USERS_HTTP)
     public List<User> users() throws ExecutionException, InterruptedException, TimeoutException {
         return userService.users();
     }
 
     @SubscriptionMapping
-    @Timed(MetricNames.ONE_USER_WS)
     public Mono<User> getUser(@Argument Integer id) throws ExecutionException, InterruptedException, TimeoutException {
         return userService.getUser(id);
     }
 
     @SubscriptionMapping
-    @Timed(MetricNames.ALL_USERS_WS)
     public Flux<User> getUsers() throws ExecutionException, InterruptedException, TimeoutException {
         return userService.getUsers();
     }
