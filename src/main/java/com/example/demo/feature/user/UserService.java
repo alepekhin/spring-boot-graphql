@@ -22,22 +22,21 @@ import java.util.concurrent.TimeoutException;
 @RequiredArgsConstructor
 public class UserService {
 
-    final UserRepository userRepository;
-
-    public User user(Integer id) throws ExecutionException, InterruptedException, TimeoutException {
+    private final UserRepository userRepository;
+    User user(Integer id) throws ExecutionException, InterruptedException, TimeoutException {
         return userRepository.getOneUser(id);
     }
 
-    public List<User> users() throws ExecutionException, InterruptedException, TimeoutException {
+    List<User> users() throws ExecutionException, InterruptedException, TimeoutException {
         return userRepository.getAllUsers();
     }
 
-    public Mono<User> getUser(Integer id) throws ExecutionException, InterruptedException, TimeoutException {
+    Mono<User> getUser(Integer id) throws ExecutionException, InterruptedException, TimeoutException {
         return Mono.just(userRepository.getOneUser(id));
 
     }
 
-    public Flux<User> getUsers() throws ExecutionException, InterruptedException, TimeoutException {
+    Flux<User> getUsers() throws ExecutionException, InterruptedException, TimeoutException {
         return Flux.fromIterable(userRepository.getAllUsers());
     }
 

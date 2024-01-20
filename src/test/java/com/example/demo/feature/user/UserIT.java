@@ -1,7 +1,6 @@
 package com.example.demo.feature.user;
 
 import com.example.demo.feature.ITBase;
-import com.example.demo.feature.MetricNames;
 import com.example.demo.model.User;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -128,19 +127,25 @@ public class UserIT extends ITBase {
     // Тесты метрик
     // ****************************
 
+    static final String ONE_USER_HTTP = "graphql_field_name=\"user\"";
+    static final String ALL_USERS_HTTP = "graphql_field_name=\"users\"";
+    static final String ONE_USER_WS = "graphql_field_name=\"getUser\"";
+    static final String ALL_USERS_WS = "graphql_field_name=\"getUsers\"";
+
+
+
     @Test
     @Order(100)
     void testMetrics() throws ExecutionException, InterruptedException {
         String metrics = metricsClient.get().retrieve().toEntity(String.class).toFuture().get().getBody();
-        assertTrue(metrics.contains(MetricNames.ONE_USER_HTTP));
-        assertTrue(metrics.contains(MetricNames.ALL_USERS_HTTP));
-        assertTrue(metrics.contains(MetricNames.ONE_USER_WS));
-        assertTrue(metrics.contains(MetricNames.ALL_USERS_WS));
+        assertTrue(metrics.contains(ONE_USER_HTTP));
+        assertTrue(metrics.contains(ALL_USERS_HTTP));
+        assertTrue(metrics.contains(ONE_USER_WS));
+        assertTrue(metrics.contains(ALL_USERS_WS));
         // print metrics
         Arrays.stream(metrics.split("\n")).forEach(r -> {
-            if ((r.contains(MetricNames.ONE_USER_HTTP) || r.contains(MetricNames.ALL_USERS_HTTP)
-                    || r.contains(MetricNames.ONE_USER_WS) || r.contains(MetricNames.ALL_USERS_WS))
-                    && r.contains("class")
+            if ((r.contains(ONE_USER_HTTP) || r.contains(ALL_USERS_HTTP)
+                    || r.contains(ONE_USER_WS) || r.contains(ALL_USERS_WS))
             ) {
                 System.out.println(r);
             }

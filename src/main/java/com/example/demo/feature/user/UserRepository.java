@@ -1,9 +1,12 @@
 package com.example.demo.feature.user;
 
-import com.example.demo.common.ClientFactory;
 import com.example.demo.model.User;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.graphql.client.HttpGraphQlClient;
 import org.springframework.stereotype.Component;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.Arrays;
 import java.util.List;
@@ -20,10 +23,18 @@ import java.util.concurrent.TimeoutException;
 @RequiredArgsConstructor
 public class UserRepository {
 
-    final ClientFactory clientFactory;
+    @Value("${repository_url}")
+    private String url;
 
-    public User getOneUser(Integer id) throws ExecutionException, InterruptedException, TimeoutException {
-        return clientFactory.getRepositoryClient()
+    private HttpGraphQlClient repositoryClient;
+
+    @PostConstruct
+    void init() {
+        repositoryClient = HttpGraphQlClient.builder(WebClient.create(url)).build();
+    }
+
+    User getOneUser(Integer id) throws ExecutionException, InterruptedException, TimeoutException {
+        return repositoryClient
                 .documentName("user_get") // abbreviation of graphql-documents/user_get.graphql
                 .variable("id", id)
                 .retrieve("user")
@@ -32,8 +43,8 @@ public class UserRepository {
                 .get(2, TimeUnit.SECONDS);
     }
 
-    public List<User> getAllUsers() throws ExecutionException, InterruptedException, TimeoutException {
-        return Arrays.stream(clientFactory.getRepositoryClient()
+    List<User> getAllUsers() throws ExecutionException, InterruptedException, TimeoutException {
+        return Arrays.stream(repositoryClient
                 .documentName("user_list")
                 .retrieve("users.data")
                 .toEntity(User[].class)

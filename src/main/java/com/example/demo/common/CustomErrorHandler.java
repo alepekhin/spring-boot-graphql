@@ -23,11 +23,7 @@ public class CustomErrorHandler extends DataFetcherExceptionResolverAdapter {
     }
 
     public static Throwable getLastCause(Throwable e) {
-        if (e.getCause() == null) {
-            return e;
-        } else {
-            return getLastCause(e.getCause());
-        }
+        return e.getCause() == null ? e : getLastCause(e.getCause());
     }
 
 }

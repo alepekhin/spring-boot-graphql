@@ -2,6 +2,9 @@
 # see https://graphqlzero.almansi.me
 repository_url: https://graphqlzero.almansi.me/api
 
+# this service api-key
+api-key: xxx
+
 spring:
   graphql:
     websocket:

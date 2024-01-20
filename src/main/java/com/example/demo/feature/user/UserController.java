@@ -24,7 +24,7 @@ import java.util.concurrent.TimeoutException;
 @RequiredArgsConstructor
 public class UserController {
 
-    final UserService userService;
+    private final UserService userService;
 
     @QueryMapping
     public User user(@Argument Integer id) throws ExecutionException, InterruptedException, TimeoutException {
