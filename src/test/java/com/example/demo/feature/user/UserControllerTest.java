@@ -3,27 +3,31 @@ package com.example.demo.feature.user;
 import com.example.demo.model.User;
 import jakarta.annotation.PostConstruct;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.graphql.test.tester.HttpGraphQlTester;
 import org.springframework.graphql.test.tester.WebSocketGraphQlTester;
 import org.springframework.web.reactive.socket.client.ReactorNettyWebSocketClient;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 
 /**
  * @author Alex
  * @since 31.07.2023
  */
-
-// Warning: This is integration test
-
 @SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class UserControllerTest {
 
@@ -36,7 +40,12 @@ public class UserControllerTest {
     @Autowired
     HttpGraphQlTester httpGraphQlTester;
 
+    @MockBean
+    UserRepository userRepository;
+
     WebSocketGraphQlTester webSocketGraphQlTester;
+
+    User expected;
 
     @PostConstruct
     void init() throws URISyntaxException {
@@ -46,6 +55,18 @@ public class UserControllerTest {
                 WebSocketGraphQlTester.builder(url, new ReactorNettyWebSocketClient())
                 .header("x-api-key", apiKey)
                 .build();
+    }
+
+    @BeforeEach
+    void initRepository() throws ExecutionException, InterruptedException, TimeoutException {
+        expected = User.builder()
+                .email("xxx@xxx.com")
+                .id(1)
+                .name("Xxx")
+                .username("X xxx")
+                .build();
+        Mockito.when(userRepository.getOneUser(any())).thenReturn(expected);
+        Mockito.when(userRepository.getAllUsers()).thenReturn(List.of(expected));
     }
 
     @Test
